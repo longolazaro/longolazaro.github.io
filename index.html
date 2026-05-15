@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio de Lázaro Longo - Economista y Analista de Datos">
     <title>Lázaro Longo | Economista & Data Analyst</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -203,11 +202,6 @@
             resize: vertical;
             min-height: 120px;
         }
-        .g-recaptcha {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-        }
         .form-submit {
             width: 100%;
             background: #3498db;
@@ -369,7 +363,6 @@
                         <label for="mensaje">Mensaje *</label>
                         <textarea id="mensaje" name="mensaje" required></textarea>
                     </div>
-                    <div class="g-recaptcha" data-sitekey="6LfL6ussAAAAAF9w0aOXIJ6K-es3pSu9v34-dXUr"></div>
                     <button type="submit" class="form-submit">Enviar mensaje</button>
                 </form>
                 <div class="contacto-info" style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 30px;">
@@ -393,14 +386,6 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Verificar que el captcha ha sido completado
-            const recaptchaToken = grecaptcha.getResponse();
-            if (!recaptchaToken) {
-                messageDiv.className = 'message error';
-                messageDiv.textContent = '✗ Por favor completa el reCAPTCHA';
-                return;
-            }
-
             const nombre = document.getElementById('nombre').value;
             const email = document.getElementById('email').value;
             const asunto = document.getElementById('asunto').value;
@@ -411,7 +396,6 @@
             formData.append('email', email);
             formData.append('subject', asunto);
             formData.append('message', mensaje);
-            formData.append('g-recaptcha-response', recaptchaToken);
 
             try {
                 const response = await fetch('https://formspree.io/f/xrejngyv', {
@@ -426,7 +410,6 @@
                     messageDiv.className = 'message success';
                     messageDiv.textContent = '✓ ¡Mensaje enviado exitosamente! Me pondré en contacto pronto.';
                     form.reset();
-                    grecaptcha.reset();
                     setTimeout(() => {
                         messageDiv.style.display = 'none';
                     }, 5000);
@@ -437,7 +420,6 @@
                 messageDiv.className = 'message error';
                 messageDiv.textContent = '✗ Hubo un error al enviar el mensaje. Por favor intenta de nuevo.';
                 console.error('Error:', error);
-                grecaptcha.reset();
             }
         });
     </script>
